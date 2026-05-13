@@ -4,58 +4,433 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rincón Digital</title>
+  <title>Rincón Digital — Landing Pages, Webs y Apps</title>
+  <meta name="description"
+    content="Creamos landing pages, sitios web y webapps modernas para negocios y emprendedores." />
+  <meta name="author" content="Rincón Digital" />
+  <meta name="robots" content="index, follow" />
 
-  <link rel="stylesheet" href="style.css">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://rincondig.vercel.app/" />
+  <meta property="og:title" content="Rincón Digital — Landing Pages, Webs y Apps" />
+  <meta property="og:description"
+    content="Creamos landing pages, sitios web y webapps modernas para negocios y emprendedores." />
+  <meta property="og:image" content="https://rincondig.vercel.app/src/assets/rincon-banner.jpg" />
 
+  <!-- Twitter/X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Rincón Digital — Landing Pages, Webs y Apps" />
+  <meta name="twitter:description"
+    content="Creamos landing pages, sitios web y webapps modernas para negocios y emprendedores." />
+  <meta name="twitter:image" content="https://rincondig.vercel.app/src/assets/rincon-banner.jpg" />
+
+  <link rel="icon" href="src/assets/logo.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap"
     rel="stylesheet">
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #050510;
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .background-grid {
+      position: fixed;
+      inset: 0;
+      background-color: #050510;
+      background-image:
+        radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.10) 1px, transparent 0),
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 20px 20px, 80px 80px, 80px 80px;
+    }
+
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+    }
+
+    .orb1 {
+      width: 400px;
+      height: 400px;
+      background: #ff006e;
+      top: -120px;
+      left: -120px;
+      opacity: .18;
+    }
+
+    .orb2 {
+      width: 400px;
+      height: 400px;
+      background: #00d9ff;
+      bottom: -120px;
+      right: -120px;
+      opacity: .18;
+    }
+
+    .container {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 20px 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .glass-card {
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      padding: 28px 24px 24px;
+      text-align: center;
+      background:
+        radial-gradient(circle at top left, rgba(0, 217, 255, 0.10), transparent 50%),
+        radial-gradient(circle at bottom right, rgba(0, 217, 255, 0.06), transparent 50%),
+        radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.12) 1px, transparent 0),
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(160deg, rgba(0, 30, 50, 0.97) 0%, rgba(5, 10, 30, 0.99) 100%);
+      background-size: 100% 100%, 100% 100%, 20px 20px, 80px 80px, 80px 80px, 100% 100%;
+      border: 1px solid rgba(0, 217, 255, 0.18);
+      box-shadow:
+        0 0 0 1px rgba(0, 217, 255, 0.06),
+        0 20px 60px rgba(0, 0, 0, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 0 40px rgba(0, 217, 255, 0.06);
+      animation: cardIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00d9ff, transparent);
+    }
+
+    .badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #00d9ff;
+      background: rgba(0, 217, 255, 0.12);
+      border: 1px solid rgba(0, 217, 255, 0.25);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(0, 217, 255, 0.12);
+      border: 1px solid rgba(0, 217, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 0 16px 0;
+      font-size: 22px;
+    }
+
+    .logo {
+      width: 130px;
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, #ff006e, #00d9ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.60);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .tagline {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #00d9ff;
+      background: rgba(0, 217, 255, 0.10);
+      border: 1px solid rgba(0, 217, 255, 0.25);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+      margin-bottom: 20px;
+    }
+
+    .stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #ff006e, #00d9ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.40);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 30px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn {
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      padding: 16px 20px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: white;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      animation: cardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 45%;
+      background: linear-gradient(rgba(255, 255, 255, 0.13), transparent);
+      border-radius: 14px 14px 0 0;
+      pointer-events: none;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      border-radius: 999px;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .btn:active {
+      transform: translateY(0px) scale(0.98);
+    }
+
+    .btn-yellow {
+      color: #ffd84d;
+      background: linear-gradient(180deg, rgba(255, 220, 80, 0.18) 0%, rgba(12, 14, 8, 0.97) 100%);
+      border: 1px solid rgba(255, 210, 70, 0.22);
+      box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.10),
+        inset 0 -10px 20px rgba(0, 0, 0, 0.5),
+        0 8px 24px rgba(0, 0, 0, 0.4),
+        0 0 12px rgba(255, 220, 80, 0.08);
+      text-shadow: 0 0 12px rgba(255, 220, 80, 0.4);
+    }
+
+    .btn-yellow::after {
+      background: rgba(255, 220, 80, 0.3);
+    }
+
+    .btn-yellow:hover {
+      box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.12), inset 0 -10px 20px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 220, 80, 0.15);
+    }
+
+    .btn-purple {
+      color: #b39dff;
+      background: linear-gradient(180deg, rgba(110, 80, 255, 0.20) 0%, rgba(10, 10, 22, 0.97) 100%);
+      border: 1px solid rgba(120, 80, 255, 0.22);
+      box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.10),
+        inset 0 -10px 20px rgba(0, 0, 0, 0.5),
+        0 8px 24px rgba(0, 0, 0, 0.4),
+        0 0 12px rgba(110, 80, 255, 0.08);
+      text-shadow: 0 0 12px rgba(155, 125, 255, 0.5);
+    }
+
+    .btn-purple::after {
+      background: rgba(120, 80, 255, 0.3);
+    }
+
+    .btn-purple:hover {
+      box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.12), inset 0 -10px 20px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(110, 80, 255, 0.15);
+    }
+
+    .btn-green {
+      color: #4dff88;
+      background: linear-gradient(180deg, rgba(70, 255, 140, 0.18) 0%, rgba(5, 18, 10, 0.97) 100%);
+      border: 1px solid rgba(70, 255, 140, 0.22);
+      box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.10),
+        inset 0 -10px 20px rgba(0, 0, 0, 0.5),
+        0 8px 24px rgba(0, 0, 0, 0.4),
+        0 0 12px rgba(70, 255, 140, 0.08);
+      text-shadow: 0 0 12px rgba(70, 255, 140, 0.4);
+    }
+
+    .btn-green::after {
+      background: rgba(70, 255, 140, 0.3);
+    }
+
+    .btn-green:hover {
+      box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.12), inset 0 -10px 20px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(70, 255, 140, 0.15);
+    }
+
+    .btn:nth-child(1) {
+      animation-delay: 0.15s;
+    }
+
+    .btn:nth-child(2) {
+      animation-delay: 0.25s;
+    }
+
+    .btn:nth-child(3) {
+      animation-delay: 0.35s;
+    }
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 
 <body>
 
   <div class="background-grid"></div>
-
   <div class="orb orb1"></div>
   <div class="orb orb2"></div>
 
   <main class="container">
-
     <div class="glass-card">
 
-      <img src="src/assets/logo.png" class="logo">
+      <span class="badge">DIGITAL</span>
 
-      <h1>Rincón Digital</h1>
+      <div style="display:flex; justify-content:flex-start; margin-bottom:16px;">
+        <img src="src/assets/logo.png" class="logo" />
+      </div>
 
-      <p>
-        Landing pages, sitios web y webapps modernas
-        para negocios y emprendedores.
-      </p>
+      <div style="text-align:left;">
+        <h1>Rincón Digital</h1>
+        <p class="tagline">✦ Disponibles para proyectos</p>
+        <p>Landing pages, sitios web y webapps modernas para negocios y emprendedores.</p>
+      </div>
+
+      <div class="stats">
+        <div class="stat-item">
+          <span class="stat-num">+20</span>
+          <span class="stat-label">Proyectos</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">100%</span>
+          <span class="stat-label">Satisfacción</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">72h</span>
+          <span class="stat-label">Entrega</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
 
       <div class="buttons">
-
-        <a href="https://eco-digital-studio.vercel.app/" class="btn primary">
-          🌐 Sitio Web
+        <a href="https://eco-digital-studio.vercel.app/" class="btn btn-yellow">
+          💼 Empieza tu proyecto aquí
         </a>
-
-        <a href="https://vidrux.com/" class="btn secondary">
-          🚀 Crear Landing Pages
+        <a href="https://vidrux.com/" class="btn btn-purple">
+          🤖 Crear Landing Pages con IA
         </a>
-
-        <a href="https://wa.me/59896782111" class="btn whatsapp">
+        <a href="https://wa.me/59896782111" class="btn btn-green">
           <i class="fa-brands fa-whatsapp"></i> WhatsApp
         </a>
-
       </div>
 
     </div>
-
   </main>
-
-  
 
 </body>
 
