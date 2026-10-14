@@ -32,9 +32,17 @@ export async function onRequestGet({ request, env }) {
     return page(500, "Error de configuración", "La integración con AliExpress todavía no está configurada.");
   }
 
+  // Un salto de línea o espacio pegado al cargar la variable en Cloudflare cambia la firma
+  // y AliExpress responde IncompleteSignature.
+  const appKey = env.ALIEXPRESS_APP_KEY.trim();
+  const appSecret = env.ALIEXPRESS_APP_SECRET.trim();
+  if (appKey !== env.ALIEXPRESS_APP_KEY || appSecret !== env.ALIEXPRESS_APP_SECRET) {
+    console.warn("AliExpress callback: ALIEXPRESS_APP_KEY o ALIEXPRESS_APP_SECRET tienen espacios o saltos de línea; se recortaron");
+  }
+
   let tokens;
   try {
-    tokens = await createToken(code, env.ALIEXPRESS_APP_KEY, env.ALIEXPRESS_APP_SECRET);
+    tokens = await createToken(code, appKey, appSecret);
   } catch (err) {
     console.error("AliExpress callback: error al obtener el token:", err.message);
     return page(502, "No se pudo completar la autorización", "AliExpress rechazó la solicitud. Intentá autorizar de nuevo.");
@@ -72,18 +80,12 @@ export async function onRequestGet({ request, env }) {
 }
 
 // Intercambia el código por access_token / refresh_token.
-async function createToken(code, appKey, appSecret) {
-  const params = {
-    app_key: appKey,
-    code,
-    sign_method: "sha256",
-    timestamp: String(Date.now()),
-  };
-  params.sign = await sign(TOKEN_API_PATH, params, appSecret);
-
-  // POST con los parámetros en la query, como en el ejemplo HTTP oficial (docId=1385).
-  const res = await fetch(`${TOKEN_ENDPOINT}?${new URLSearchParams(params)}`, {
+export async function createToken(code, appKey, appSecret) {
+  const request = await buildTokenRequest(code, appKey, appSecret);
+  const res = await fetch(request.url, {
     method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+    body: request.body,
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   const raw = await res.text();
@@ -103,6 +105,23 @@ async function createToken(code, appKey, appSecret) {
     throw new Error(`${data.code || res.status} ${data.message || ""} request_id=${data.request_id || "-"}`.trim());
   }
   return data;
+}
+
+// Arma la solicitud igual que el SDK oficial (GopExecutor): parámetros de sistema y
+// sign en la query, parámetros de negocio (code) en el cuerpo del POST. La firma se
+// calcula sobre los valores sin codificar; la codificación es solo para el transporte.
+export async function buildTokenRequest(code, appKey, appSecret, timestamp = Date.now()) {
+  const system = {
+    app_key: appKey,
+    sign_method: "sha256",
+    timestamp: String(timestamp),
+  };
+  const business = { code };
+  const sig = await sign(TOKEN_API_PATH, { ...system, ...business }, appSecret);
+  return {
+    url: `${TOKEN_ENDPOINT}?${new URLSearchParams({ ...system, sign: sig })}`,
+    body: new URLSearchParams(business).toString(),
+  };
 }
 
 // Firma de System Interfaces: ruta de la API + parámetros ordenados (clave+valor),
