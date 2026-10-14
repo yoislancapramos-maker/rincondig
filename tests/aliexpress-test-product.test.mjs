@@ -104,6 +104,11 @@ test("sin cabecera, con clave incorrecta o con la clave en la URL responde 404",
   assert.equal(calls.length, 0);
 });
 
+test("acepta la clave con espacios alrededor en la cabecera", async () => {
+  const { call } = setup();
+  assert.equal((await call("", `Bearer   ${ADMIN_KEY}  `)).status, 200);
+});
+
 test("consulta 1005004638293060 a UY con aliexpress.ds.product.get firmada correctamente", async () => {
   const { call, calls } = setup();
   const res = await call();

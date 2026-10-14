@@ -149,7 +149,7 @@ async function isAuthorized(request, adminKey) {
   if (!header.startsWith("Bearer ")) return false;
   const enc = new TextEncoder();
   const [a, b] = await Promise.all([
-    crypto.subtle.digest("SHA-256", enc.encode(header.slice(7))),
+    crypto.subtle.digest("SHA-256", enc.encode(header.slice(7).trim())),
     crypto.subtle.digest("SHA-256", enc.encode(adminKey.trim())),
   ]);
   const x = new Uint8Array(a);
