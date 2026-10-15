@@ -1,0 +1,26 @@
+// Worker programado de renovación de tokens AliExpress.
+// Despliegue: npx wrangler deploy (desde esta carpeta). No se despliega con el push de Pages.
+// Secreto requerido (no está en este archivo): ALIEXPRESS_APP_SECRET → npx wrangler secret put ALIEXPRESS_APP_SECRET
+{
+  "name": "rd-aliexpress-token-refresh",
+  "main": "src/index.mjs",
+  "compatibility_date": "2026-09-29",
+
+  // Sin URL pública: el Worker solo corre por cron.
+  "workers_dev": false,
+  "preview_urls": false,
+
+  // Cada 6 horas (UTC).
+  "triggers": { "crons": ["0 */6 * * *"] },
+
+  // Mismo KV que usa el callback de Pages.
+  "kv_namespaces": [{ "binding": "ALIEXPRESS_TOKENS", "id": "2a909fd1e8be4f68a708ce18a5b4a6e1" }],
+
+  // Valores no secretos: el AppKey aparece en las URLs públicas de autorización.
+  "vars": {
+    "ALIEXPRESS_APP_KEY": "553836",
+    "ALIEXPRESS_CALLBACK_URL": "https://rincondig.pages.dev/api/aliexpress/callback"
+  },
+
+  "observability": { "enabled": true }
+}

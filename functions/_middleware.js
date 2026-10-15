@@ -1,9 +1,9 @@
 // Bloquea la publicación de carpetas internas del repositorio.
-// El sitio se publica desde la raíz del repo, así que sin esto /tests, /lib, /scripts y
-// /functions se servirían como archivos estáticos. _routes.json limita este middleware
+// El sitio se publica desde la raíz del repo, así que sin esto /tests, /lib, /scripts,
+// /functions y /workers se servirían como archivos estáticos. _routes.json limita este middleware
 // a /api/* y a esas carpetas: la landing sigue siendo estática y no invoca funciones.
 
-const PRIVATE_PREFIXES = ["/tests/", "/lib/", "/scripts/", "/functions/"];
+const PRIVATE_PREFIXES = ["/tests/", "/lib/", "/scripts/", "/functions/", "/workers/"];
 
 export function isPrivatePath(pathname) {
   let path;

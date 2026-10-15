@@ -11,7 +11,7 @@ const call = async (path) => {
 };
 
 test("bloquea carpetas internas con 404 sin llegar al contenido", async () => {
-  for (const p of ["/tests/pricing.test.mjs", "/lib/pricing.mjs", "/lib/aliexpress.mjs", "/scripts/x.mjs", "/functions/api/aliexpress/callback.js", "/tests", "/LIB/pricing.mjs", "/%74ests/x", "//tests/x", "/lib%2Fpricing.mjs", "/tests/%E0%A4%A"]) {
+  for (const p of ["/tests/pricing.test.mjs", "/lib/pricing.mjs", "/lib/aliexpress.mjs", "/scripts/x.mjs", "/functions/api/aliexpress/callback.js", "/workers/aliexpress-token-refresh/wrangler.jsonc", "/workers/aliexpress-token-refresh/src/index.mjs", "/tests", "/LIB/pricing.mjs", "/%74ests/x", "//tests/x", "/lib%2Fpricing.mjs", "/tests/%E0%A4%A"]) {
     const r = await call(p);
     assert.equal(r.status, 404, p);
     assert.equal(r.nextCalled, false, p);
@@ -30,7 +30,7 @@ test("_routes.json: el middleware solo corre en /api y carpetas privadas (la lan
   const routes = JSON.parse(readFileSync(new URL("../_routes.json", import.meta.url), "utf8"));
   assert.equal(routes.version, 1);
   assert.ok(routes.include.includes("/api/*"));
-  for (const p of ["/tests/*", "/lib/*", "/scripts/*", "/functions/*"]) assert.ok(routes.include.includes(p), p);
+  for (const p of ["/tests/*", "/lib/*", "/scripts/*", "/functions/*", "/workers/*"]) assert.ok(routes.include.includes(p), p);
   assert.ok(!routes.include.includes("/*"));
 });
 
