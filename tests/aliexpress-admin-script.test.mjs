@@ -47,3 +47,15 @@ test("explica cada tipo de respuesta", () => {
   );
   assert.match(explain(400, h("cloudflare"), JSON.stringify({ ok: false, error: "invalid_parameters" })), /invalid_parameters/);
 });
+
+test("URLs de administración: rutas y parámetros permitidos, solo ASCII", async () => {
+  const { buildAdminUrl } = await import("../scripts/aliexpress-admin.mjs");
+  assert.equal(
+    buildAdminUrl("quote", { product_id: "1005012996661961", country: "US", sku_id: "12000062", quantity: "2", currency: "USD" }),
+    "https://rincondig.pages.dev/api/aliexpress/quote?product_id=1005012996661961&country=US&sku_id=12000062&quantity=2&currency=USD"
+  );
+  assert.equal(buildAdminUrl("refresh", { product_id: "1", country: "US" }), "https://rincondig.pages.dev/api/aliexpress/refresh?product_id=1&country=US");
+  assert.throws(() => buildAdminUrl("callback", {}), /Ruta desconocida/);
+  assert.throws(() => buildAdminUrl("quote", { token: "x" }), /Parámetro desconocido/);
+  assert.throws(() => buildAdminUrl("quote", { currency: "U$D" }), /inválido/);
+});

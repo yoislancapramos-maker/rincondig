@@ -143,7 +143,7 @@ export function summarize(data) {
 }
 
 // Compara la clave en tiempo constante (sobre los hashes SHA-256).
-async function isAuthorized(request, adminKey) {
+export async function isAuthorized(request, adminKey) {
   if (!adminKey) return false;
   const header = request.headers.get("Authorization") || "";
   if (!header.startsWith("Bearer ")) return false;
@@ -159,7 +159,7 @@ async function isAuthorized(request, adminKey) {
   return diff === 0;
 }
 
-function json(status, body) {
+export function json(status, body) {
   return new Response(JSON.stringify(body, null, 2), {
     status,
     headers: {
